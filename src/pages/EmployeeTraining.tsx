@@ -1,8 +1,16 @@
+import {useState} from 'react';
 import PersonaLearnLayout from '../layouts/PersonaLearnLayout';
 import Icon from '../components/Icon';
 import Button from '../components/Button';
 
 export default function EmployeeTraining() {
+    const [selectedBlock, setSelectedBlock] = useState('objections');
+
+    const trainingBlocks = [
+        {id: 'sales-basic', label: 'Блок 1: Основы продаж'},
+        {id: 'objections', label: 'Блок 2: Работа с возражениями'},
+        {id: 'enterprise', label: 'Блок 3: Enterprise-клиенты'},
+    ];
     return (
         <PersonaLearnLayout>
             <div className="m-8 max-w-[1000px]">
@@ -17,10 +25,41 @@ export default function EmployeeTraining() {
                     <Icon name="chevron_right" className="text-[16px]"/>
                     <span className="text-[#111418]">Техника "Присоединение"</span>
                 </nav>
+                <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                    <div>
+                        <h1 className="mb-2 text-3xl font-bold tracking-tight">Техника "Присоединение"</h1>
+                        <p className="text-[#617289]">Урок 4 • Длительность: 12 минут</p>
+                    </div>
 
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold tracking-tight mb-2">Техника "Присоединение"</h1>
-                    <p className="text-[#617289]">Урок 4 • Длительность: 12 минут</p>
+                    <div className="w-full sm:w-auto min-w-[280px] sm:min-w-[320px]">
+                        <label className="mb-1.5 block text-xs font-bold uppercase tracking-[0.08em] text-[#617289]">
+                            Выбранный блок
+                        </label>
+                        <div className="relative">
+                            <select
+                                value={selectedBlock}
+                                onChange={(e) => setSelectedBlock(e.target.value)}
+                                className="h-12 w-full appearance-none rounded-xl border border-[#dbe0e6] bg-white pl-4 pr-11 text-sm font-semibold text-[#111418] outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/15"
+                            >
+                                {trainingBlocks.map((block) => (
+                                    <option key={block.id} value={block.id}>
+                                        {block.label}
+                                    </option>
+                                ))}
+                            </select>
+                            <div
+                                className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-[#617289]">
+                                <Icon name="expand_more" className="text-xl"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mb-8 rounded-2xl border border-blue-100 bg-blue-50/60 px-4 py-3">
+                    <p className="text-sm leading-6 text-[#4f6480]">
+                        Если сотруднику назначено несколько блоков, он может переключаться между ними и проходить
+                        обучение нелинейно.
+                    </p>
                 </div>
 
                 <div

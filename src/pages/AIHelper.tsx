@@ -13,12 +13,14 @@ export default function AIHelper() {
             <div className="text-center">
                 <div className="px-8 py-4 border-b border-slate-200 bg-white flex items-center justify-between">
                     <div>
-                        <h2 className="text-slate-900 text-lg font-bold">Экзаменационная сессия</h2>
-                        <p className="text-sm text-slate-500">Симуляция переговоров с AI-клиентом</p>
+                        <h2 className="text-slate-900 text-lg font-bold">AI помощник</h2>
+                        <p className="text-sm text-slate-500">
+                            Поддержка сотрудника по вопросам из базы знаний и библиотеке материалов
+                        </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="flex size-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span className="text-xs font-medium text-slate-500">AI Ассистент активен</span>
+                        <span className="text-xs font-medium text-slate-500">AI помощник активен</span>
                     </div>
                 </div>
 
@@ -47,7 +49,7 @@ export default function AIHelper() {
                             )}
                             <div className={`flex flex-col gap-1.5 ${msg.sender === 'user' ? 'items-end' : ''}`}>
                                 <p className="text-[11px] font-bold text-slate-400 uppercase tracking-tight ml-1">
-                                    {msg.sender === 'ai' ? 'AI Ассистент' : 'Вы'}
+                                    {msg.sender === 'ai' ? 'AI помощник' : 'Вы'}
                                 </p>
                                 <div
                                     className={`p-4 rounded-xl shadow-sm ${
@@ -68,7 +70,7 @@ export default function AIHelper() {
                         <div className="relative flex-1">
             <textarea
                 className="w-full bg-slate-50 border-slate-200 rounded-xl px-4 py-3 pr-12 focus:ring-blue-500 focus:border-blue-500 resize-none text-sm"
-                placeholder="Введите ваш ответ здесь..."
+                placeholder="Задайте вопрос по материалам, базе знаний или рабочей ситуации..."
                 rows={1}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}

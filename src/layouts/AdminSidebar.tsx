@@ -10,7 +10,9 @@ interface NavItem {
 const navItems: NavItem[] = [
     {path: '/', icon: 'grid_view', label: 'Главная'},
     {path: '/employee-list', icon: 'group', label: 'Сотрудники'},
+    {path: '/training-materials', icon: 'folder_open', label: 'Материалы'},
     {path: '/analytics-admin', icon: 'bar_chart', label: 'Аналитика'},
+    {path: '/ai-helper', icon: 'psychology', label: 'AI Диалог'},
     {path: '/setting', icon: 'settings', label: 'Настройки'},
 ];
 

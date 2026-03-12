@@ -11,6 +11,7 @@ import ProtectedRoute from "./ProtectedRoute.tsx";
 import NotFound from "../pages/NotFound.tsx";
 import AccessDenied from "../pages/AccessDenied.tsx";
 import EmployeeProfile from "../pages/EmployeeProfile.tsx";
+import DashboardUser from "../pages/DashboardUser.tsx";
 
 const router = createBrowserRouter([
     {
@@ -22,6 +23,14 @@ const router = createBrowserRouter([
         element: (
             <ProtectedRoute allow={["client_admin", "client_user"]}>
                 <DashboardManager/>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: '/dashboard',
+        element: (
+            <ProtectedRoute allow={["client_admin", "client_user"]}>
+                <DashboardUser/>
             </ProtectedRoute>
         ),
     },
@@ -68,7 +77,7 @@ const router = createBrowserRouter([
     {
         path: '/training',
         element: (
-            <ProtectedRoute allow={["client_user"]}>
+            <ProtectedRoute allow={["client_admin", "client_user"]}>
                 <EmployeeTraining/>
             </ProtectedRoute>
         ),
@@ -76,7 +85,7 @@ const router = createBrowserRouter([
     {
         path: '/ai-helper',
         element: (
-            <ProtectedRoute allow={["client_user"]}>
+            <ProtectedRoute allow={["client_admin", "client_user"]}>
                 <AIHelper/>
             </ProtectedRoute>
         ),
