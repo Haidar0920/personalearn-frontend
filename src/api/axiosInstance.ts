@@ -1,17 +1,29 @@
-import axios from "axios"
-import {baseUrl} from "../api.ts";
+import axios from 'axios'
+import { supabase } from '../lib/supabase'
 
 const api = axios.create({
-    baseURL: baseUrl,
-});
-
-api.interceptors.request.use((config) => {
-    const rawToken = localStorage.getItem("accessToken");
-    const token = rawToken ? JSON.parse(rawToken) : null;
-    if(token){
-        config.headers.Authorization = `Bearer ${token.accessToken}`;
-    }
-    return config;
+  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api-persona-learn',
 })
 
-export default api;
+// Attach Supabase JWT to every request
+api.interceptors.request.use(async (config) => {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (session?.access_token) {
+    config.headers.Authorization = `Bearer ${session.access_token}`
+  }
+  return config
+})
+
+// Handle 401 → redirect to login
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      await supabase.auth.signOut()
+      window.location.href = '/login'
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default api

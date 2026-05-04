@@ -1,52 +1,51 @@
-import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import type { ReactNode } from 'react';
-import { getRoleFromToken } from '../services/getRoleFromToken';
+import { supabase } from '../lib/supabase';
+import type { Session } from '@supabase/supabase-js';
 
 interface ProtectedRouteProps {
-    children: ReactNode;
-    allow?: string[];
-}
-
-function isTokenExpired(token: string): boolean {
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const exp = payload?.exp;
-
-    if (typeof exp !== 'number') return false;
-
-    return exp <= Math.floor(Date.now() / 1000);
-  } catch {
-    return true;
-  }
+  children: ReactNode;
+  allow?: string[];
 }
 
 export default function ProtectedRoute({ children, allow }: ProtectedRouteProps) {
-  const token = localStorage.getItem('accessToken');
+  const [session, setSession] = useState<Session | null | undefined>(undefined);
+  const [role, setRole] = useState<string | null>(null);
 
-  if (!token) {
-    toast.error('Please login to continue', { toastId: 'auth-required' });
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      const r = session?.user?.app_metadata?.role as string ?? null;
+      setRole(r);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      const r = session?.user?.app_metadata?.role as string ?? null;
+      setRole(r);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Loading state
+  if (session === undefined) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+      </div>
+    );
+  }
+
+  // Not logged in
+  if (!session) {
     return <Navigate to="/login" replace />;
   }
 
-  if (isTokenExpired(token)) {
-    localStorage.removeItem('accessToken');
-    toast.error('Session expired. Please login again.', { toastId: 'session-expired' });
-    return <Navigate to="/login" replace />;
-  }
-
-  if (allow && allow.length > 0) {
-    const role = getRoleFromToken();
-
-    if (!role) {
-      toast.error('Please login to continue', { toastId: 'auth-required' });
-      return <Navigate to="/login" replace />;
-    }
-
-    if (!allow.includes(role)) {
-      toast.error('You do not have permission to access this page', { toastId: 'access-denied' });
-      return <Navigate to="/access-denied" replace />;
-    }
+  // Role check
+  if (allow && allow.length > 0 && role && !allow.includes(role)) {
+    return <Navigate to="/access-denied" replace />;
   }
 
   return <>{children}</>;
