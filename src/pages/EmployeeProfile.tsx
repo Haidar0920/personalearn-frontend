@@ -299,6 +299,11 @@ export default function EmployeeProfile() {
                                 <SvgIcon name="plus-circle" className="h-5 w-5"/>
                                 Назначить материал
                             </button>
+                            <button
+                                className="inline-flex h-[56px] items-center justify-center gap-3 rounded-[16px] border border-slate-200 bg-white px-7 text-[16px] font-bold text-slate-700 transition hover:bg-slate-50">
+                                <SvgIcon name="download" className="h-5 w-5"/>
+                                Выгрузить отчёт
+                            </button>
                         </div>
                     </div>
                 </section>
@@ -463,8 +468,9 @@ export default function EmployeeProfile() {
                                 <tr className="border-t border-slate-100 text-left text-[14px] font-black uppercase tracking-[0.06em] text-slate-400">
                                     <th className="px-7 py-5">Название темы</th>
                                     <th className="px-7 py-5">Статус</th>
+                                    <th className="px-7 py-5">Дата начала</th>
                                     <th className="px-7 py-5">Дата завершения</th>
-                                    <th className="px-7 py-5 text-right">Действия</th>
+                                    <th className="px-7 py-5 text-right">Последняя активность</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -490,13 +496,13 @@ export default function EmployeeProfile() {
                         </span>
                                         </td>
                                         <td className="px-7 py-5 text-[16px] font-medium text-slate-500">
+                                            {material.startDate ?? '—'}
+                                        </td>
+                                        <td className="px-7 py-5 text-[16px] font-medium text-slate-500">
                                             {material.dueDate}
                                         </td>
-                                        <td className="px-7 py-5 text-right">
-                                            <button
-                                                className="rounded-full p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600">
-                                                <SvgIcon name="more" className="h-[18px] w-[18px]"/>
-                                            </button>
+                                        <td className="px-7 py-5 text-right text-[16px] font-medium text-slate-500">
+                                            {material.lastActivity ?? '—'}
                                         </td>
                                     </tr>
                                 ))}

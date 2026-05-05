@@ -57,22 +57,6 @@ export default function DashboardManager() {
                     </div>
                 </div>
 
-                <section>
-                    <div className="flex items-center justify-between mb-5">
-                        <h4 className="text-base font-bold">Быстрые действия</h4>
-                        <div className="h-px flex-1 bg-slate-200 ml-6"></div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {dashboardData.quickActions.map((action, index) => (
-                            <QuickActionCard
-                                key={index}
-                                icon={action.icon}
-                                title={action.title}
-                                description={action.description}
-                            />
-                        ))}
-                    </div>
-                </section>
             </div>
         </PersonaLearnLayout>
     );

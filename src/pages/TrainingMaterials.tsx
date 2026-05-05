@@ -37,14 +37,6 @@ export default function TrainingMaterials() {
                         Управляйте контентом и учебными модулями для ваших менеджеров
                     </p>
                 </div>
-                <Button
-                    icon="add_circle"
-                    iconPosition="left"
-                    className="h-12 px-6"
-                    onClick={() => setShowUploadModal(true)}
-                >
-                    Загрузить материал
-                </Button>
             </div>
 
             <div className="m-8 flex border-b border-[#dbe0e6] mb-8 overflow-x-auto scrollbar-hide">
@@ -109,20 +101,6 @@ export default function TrainingMaterials() {
                     </div>
                 ))}
 
-                <div
-                    className="group border-2 border-dashed border-[#dbe0e6] rounded-xl flex flex-col items-center justify-center p-6 text-center hover:bg-white hover:border-blue-500 transition-all cursor-pointer min-h-[250px]"
-                    onClick={() => setShowUploadModal(true)}
-                >
-                    <div
-                        className="size-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform mb-4">
-                        <Icon name="upload_file" className="text-3xl"/>
-                    </div>
-                    <h4 className="text-[#111418] font-bold mb-1">Новый материал</h4>
-                    <p className="text-sm text-[#617289]">
-                        Нажмите, чтобы добавить<br/>
-                        обучающий модуль
-                    </p>
-                </div>
             </div>
 
             {showUploadModal && (

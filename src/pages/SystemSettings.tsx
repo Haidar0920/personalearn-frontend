@@ -88,22 +88,6 @@ export default function SystemSettings() {
                                 Сбросить
                             </button>
                         </div>
-                        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                            <div className="flex items-center gap-4">
-                                <div
-                                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-500">
-                                    <Icon name="verified_user"/>
-                                </div>
-                                <div>
-                                    <p className="font-semibold text-sm">Двухфакторная аутентификация</p>
-                                    <p className="text-xs text-green-600 font-medium">Включена (SMS / Приложение)</p>
-                                </div>
-                            </div>
-                            <button
-                                className="text-gray-500 text-sm font-bold hover:underline px-4 py-2 hover:bg-gray-200/50 rounded-lg transition-all">
-                                Настроить
-                            </button>
-                        </div>
                     </div>
                 </section>
 
@@ -117,35 +101,11 @@ export default function SystemSettings() {
                             Нужна помощь с AI-тренажером или возникли вопросы по аналитике? Мы на связи 24/7.
                         </p>
                         <form className="space-y-4">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="flex flex-col gap-1.5">
-                                    <label className="text-xs font-semibold text-gray-500 uppercase">Тема</label>
-                                    <select
-                                        className="rounded-xl border-gray-200 text-sm px-4 py-2 focus:ring-blue-500">
-                                        <option>Технический вопрос</option>
-                                        <option>Проблема с AI-диалогом</option>
-                                        <option>Доступ к аналитике</option>
-                                        <option>Другое</option>
-                                    </select>
-                                </div>
-                                <div className="flex flex-col gap-1.5">
-                                    <label className="text-xs font-semibold text-gray-500 uppercase">Срочность</label>
-                                    <select
-                                        className="rounded-xl border-gray-200 text-sm px-4 py-2 focus:ring-blue-500">
-                                        <option>Обычная</option>
-                                        <option>Срочно</option>
-                                        <option>Критическая ошибка</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-                                <label className="text-xs font-semibold text-gray-500 uppercase">Сообщение</label>
-                                <textarea
-                                    className="rounded-xl border-gray-300 text-sm px-4 py-2"
-                                    placeholder="Опишите ситуацию..."
-                                    rows={4}
-                                />
-                            </div>
+                            <textarea
+                                className="w-full rounded-xl border border-gray-300 text-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                                placeholder="Опишите ситуацию..."
+                                rows={4}
+                            />
                             <Button className="w-full py-3.5">Отправить запрос</Button>
                         </form>
                     </div>
