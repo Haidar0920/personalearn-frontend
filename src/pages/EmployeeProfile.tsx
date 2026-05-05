@@ -11,6 +11,8 @@ type MaterialItem = {
     status: string;
     statusTone: StatusTone;
     dueDate: string;
+    startDate?: string;
+    lastActivity?: string;
     icon: 'book' | 'play' | 'lock';
     iconWrapperClassName: string;
 };
@@ -301,7 +303,7 @@ export default function EmployeeProfile() {
                             </button>
                             <button
                                 className="inline-flex h-[56px] items-center justify-center gap-3 rounded-[16px] border border-slate-200 bg-white px-7 text-[16px] font-bold text-slate-700 transition hover:bg-slate-50">
-                                <SvgIcon name="download" className="h-5 w-5"/>
+                                <SvgIcon name="mail" className="h-5 w-5"/>
                                 Выгрузить отчёт
                             </button>
                         </div>

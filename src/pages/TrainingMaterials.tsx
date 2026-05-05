@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import PersonaLearnLayout from '../layouts/PersonaLearnLayout';
 import Icon from '../components/Icon';
-import Button from '../components/Button';
 import trainingMaterialsData from '../data/trainingMaterials2.json';
 
 export default function TrainingMaterials() {

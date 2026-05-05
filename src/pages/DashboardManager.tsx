@@ -2,7 +2,6 @@ import PersonaLearnLayout from '../layouts/PersonaLearnLayout';
 import KPICard from '../components/KPICard';
 import ProgressChart from '../components/ProgressChart';
 import MasteryChart from '../components/MasteryChart';
-import QuickActionCard from '../components/QuickActionCard';
 import dashboardData from '../data/dashboard2.json';
 import {useEffect} from "react";
 import {getRoleFromToken} from "../services/getRoleFromToken.ts";
