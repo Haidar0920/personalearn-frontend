@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import PersonaLearnLayout from '../layouts/PersonaLearnLayout';
 import { employeesApi, type Employee } from '../api/employees';
@@ -229,15 +229,6 @@ export default function EmployeeProfile() {
     load();
   }, [id]);
 
-  const initials = useMemo(() => {
-    if (!employee?.name) return 'ИИ';
-    return employee.name
-      .split(' ')
-      .map((part) => part[0])
-      .join('')
-      .slice(0, 2)
-      .toUpperCase();
-  }, [employee?.name]);
 
   if (loading) {
     return (

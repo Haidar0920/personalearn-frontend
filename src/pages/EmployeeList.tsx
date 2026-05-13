@@ -3,7 +3,7 @@ import PersonaLearnLayout from '../layouts/PersonaLearnLayout';
 import Icon from '../components/Icon';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { employeesApi, Employee, DashboardStats } from '../api/employees';
+import { employeesApi, type Employee, type DashboardStats } from '../api/employees';
 
 export default function EmployeeList() {
     const navigate = useNavigate();
