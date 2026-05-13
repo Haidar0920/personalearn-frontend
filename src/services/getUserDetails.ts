@@ -1,18 +1,23 @@
-import type {User} from "../layouts/PersonaLearnLayout.tsx";
+import type { User } from '../layouts/PersonaLearnLayout.tsx';
+import { supabase } from '../lib/supabase';
 
 export function getUserDetails(): User | null {
-    const token = localStorage.getItem('accessToken');
-    if (!token) return null;
+  // Synchronous version: returns null if no session yet loaded
+  // The layout uses this as initial state; async updates handled separately
+  return null;
+}
 
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
+export async function getUserDetailsAsync(): Promise<User | null> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
 
-        return {
-            firstName: payload?.preferred_username,
-            lastName: payload?.family_name,
-            email: payload?.email,
-        };
-    } catch {
-        return null;
-    }
+  const fullName = (user.user_metadata?.full_name as string) ?? '';
+  const email = user.email ?? '';
+  const parts = fullName.trim().split(' ');
+
+  return {
+    firstName: parts[0] ?? email.split('@')[0],
+    lastName: parts.slice(1).join(' ') || ' ',
+    email,
+  };
 }

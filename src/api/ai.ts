@@ -11,7 +11,13 @@ export interface ChatRequest {
   employeeId: string
   materialId?: string
   message: string
-  chatType?: 'employee_chat' | 'admin_chat'
+  chatType?: 'employee_chat' | 'admin_chat' | 'material' | 'general'
+}
+
+export interface OnboardingResponse {
+  reply: string
+  completed: boolean
+  learningProfile: string
 }
 
 export const aiApi = {
@@ -22,4 +28,7 @@ export const aiApi = {
     api.get<ChatMessage[]>('/ai/history', {
       params: { employeeId, ...(materialId && { materialId }), chatType }
     }).then(r => r.data),
+
+  onboarding: (message: string) =>
+    api.post<OnboardingResponse>('/ai/onboarding', { message }).then(r => r.data),
 }

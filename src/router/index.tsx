@@ -1,5 +1,6 @@
 import {createBrowserRouter} from 'react-router-dom';
 import Login from '../pages/Login';
+import Register from '../pages/Register';
 import DashboardManager from '../pages/DashboardManager';
 import EmployeeList from '../pages/EmployeeList';
 import TrainingMaterials from '../pages/TrainingMaterials';
@@ -12,11 +13,17 @@ import NotFound from "../pages/NotFound.tsx";
 import AccessDenied from "../pages/AccessDenied.tsx";
 import EmployeeProfile from "../pages/EmployeeProfile.tsx";
 import DashboardUser from "../pages/DashboardUser.tsx";
+import NewEmployee from "../pages/NewEmployee.tsx";
+import Onboarding from "../pages/Onboarding.tsx";
 
 const router = createBrowserRouter([
     {
         path: '/login',
         element: <Login/>,
+    },
+    {
+        path: '/register',
+        element: <Register/>,
     },
     {
         path: '/',
@@ -43,10 +50,26 @@ const router = createBrowserRouter([
         ),
     },
     {
+        path: '/employee-list/new',
+        element: (
+            <ProtectedRoute allow={["client_admin"]}>
+                <NewEmployee/>
+            </ProtectedRoute>
+        ),
+    },
+    {
         path: '/employee/:id',
         element: (
             <ProtectedRoute allow={["client_admin"]}>
                 <EmployeeProfile/>
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: '/onboarding',
+        element: (
+            <ProtectedRoute allow={["client_user"]}>
+                <Onboarding/>
             </ProtectedRoute>
         ),
     },

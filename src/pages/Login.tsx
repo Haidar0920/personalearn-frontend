@@ -154,12 +154,19 @@ export default function Login() {
                         {/*        Войти через Google*/}
                         {/*    </button>*/}
                         {/*</div>*/}
-                        <div className="mt-12 flex justify-center gap-6 text-xs text-[#617289]">
+                        <p className="mt-8 text-center text-sm text-[#617289]">
+                            Нет аккаунта?{' '}
+                            <button
+                                type="button"
+                                onClick={() => navigate('/register')}
+                                className="text-blue-500 font-semibold hover:underline"
+                            >
+                                Зарегистрироваться
+                            </button>
+                        </p>
+                        <div className="mt-6 flex justify-center gap-6 text-xs text-[#617289]">
                             <a className="hover:text-blue-500 transition-colors" href="#">
                                 Помощь
-                            </a>
-                            <a className="hover:text-blue-500 transition-colors" href="#">
-                                RU/EN
                             </a>
                         </div>
                     </div>

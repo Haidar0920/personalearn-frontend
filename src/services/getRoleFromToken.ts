@@ -1,23 +1,6 @@
-export type Role = 'ADMIN' | 'USER';
+import { supabase } from '../lib/supabase';
 
-export function getToken() {
-    return localStorage.getItem('accessToken');
-}
-
-export function getRoleFromToken(): string | null {
-    const token = localStorage.getItem('accessToken');
-    if (!token) return null;
-
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-
-        const clientRoles =
-            payload?.resource_access?.['persona-learn']?.roles;
-
-        if (!clientRoles || clientRoles.length === 0) return null;
-
-        return clientRoles[0];
-    } catch {
-        return null;
-    }
+export async function getRoleFromToken(): Promise<string | null> {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.user?.app_metadata?.role ?? null;
 }

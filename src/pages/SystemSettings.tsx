@@ -1,12 +1,16 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import PersonaLearnLayout, {type User} from '../layouts/PersonaLearnLayout';
 import Icon from '../components/Icon';
 import Button from '../components/Button';
-import {getUserDetails} from "../services/getUserDetails.ts";
+import {getUserDetailsAsync} from "../services/getUserDetails.ts";
 
 export default function SystemSettings() {
 
-    const [profileData] = useState<User | null>(() => getUserDetails());
+    const [profileData, setProfileData] = useState<User | null>(null);
+
+    useEffect(() => {
+        getUserDetailsAsync().then(setProfileData).catch(() => {});
+    }, []);
 
 
     return (
