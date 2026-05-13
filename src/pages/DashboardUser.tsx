@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PersonaLearnLayout from '../layouts/PersonaLearnLayout';
-import { employeesApi, type Employee } from '../api/employees';
+import Icon from '../components/Icon';
+import { employeesApi, type Employee, type EmployeeMaterialItem } from '../api/employees';
 
 type StatCardProps = {
   icon: React.ReactNode;
@@ -116,9 +117,27 @@ function RobotGhost() {
   );
 }
 
+const TYPE_ICON: Record<string, string> = {
+  pdf: 'description',
+  audio: 'audio_file',
+  video: 'play_circle',
+};
+
+const STATUS_COLOR: Record<string, string> = {
+  assigned: 'bg-slate-100 text-slate-600',
+  in_progress: 'bg-blue-100 text-blue-700',
+  completed: 'bg-emerald-100 text-emerald-700',
+};
+const STATUS_LABEL: Record<string, string> = {
+  assigned: 'Назначено',
+  in_progress: 'В процессе',
+  completed: 'Завершено',
+};
+
 export default function DashboardUser() {
   const navigate = useNavigate();
   const [employee, setEmployee] = useState<Employee | null>(null);
+  const [materials, setMaterials] = useState<EmployeeMaterialItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -130,6 +149,11 @@ export default function DashboardUser() {
           navigate('/onboarding', { replace: true });
           return;
         }
+        // Load materials after employee is confirmed
+        try {
+          const mats = await employeesApi.myMaterials();
+          setMaterials(mats);
+        } catch { /* silent */ }
       } catch (err: unknown) {
         const axiosErr = err as { response?: { status?: number } };
         if (axiosErr?.response?.status === 404) {
@@ -140,6 +164,10 @@ export default function DashboardUser() {
               navigate('/onboarding', { replace: true });
               return;
             }
+            try {
+              const mats = await employeesApi.myMaterials();
+              setMaterials(mats);
+            } catch { /* silent */ }
           } catch {
             // Can't link, show default UI
           }
@@ -162,8 +190,10 @@ export default function DashboardUser() {
   }
 
   const firstName = employee?.name?.split(' ')[0] ?? 'Сотрудник';
-  const materialsCount = employee?.materialsCount ?? 0;
-  const progress = employee?.trainingProgress ?? 0;
+  const materialsCount = materials.length;
+  const completedCount = materials.filter(m => m.status === 'completed').length;
+  const progress = materialsCount > 0 ? Math.round((completedCount / materialsCount) * 100) : (employee?.trainingProgress ?? 0);
+  const inProgressMaterial = materials.find(m => m.status === 'in_progress') ?? materials.find(m => m.status === 'assigned');
 
   return (
     <PersonaLearnLayout>
@@ -238,7 +268,10 @@ export default function DashboardUser() {
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <button
                   type="button"
-                  onClick={() => navigate('/training')}
+                  onClick={() => inProgressMaterial
+                    ? navigate(`/training?materialId=${inProgressMaterial.materialId}`)
+                    : navigate('/training')
+                  }
                   className="inline-flex h-[54px] items-center justify-center gap-3 rounded-[16px] bg-blue-600 px-6 text-[15px] font-bold text-white shadow-[0_8px_14px_rgba(37,99,235,0.25)] transition hover:bg-blue-700 xl:h-[56px] xl:text-[16px]"
                 >
                   Продолжить обучение
@@ -257,6 +290,50 @@ export default function DashboardUser() {
             </div>
           </div>
         </section>
+
+        {/* Materials list */}
+        {materials.length > 0 && (
+          <section>
+            <h2 className="text-[18px] font-bold text-slate-950 mb-4">Мои материалы</h2>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {materials.map((mat) => (
+                <button
+                  key={mat.materialId}
+                  onClick={() => navigate(`/training?materialId=${mat.materialId}`)}
+                  className="text-left p-5 bg-white rounded-[18px] border border-slate-200 hover:border-blue-300 hover:shadow-md transition-all group"
+                >
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="p-2.5 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors">
+                      <Icon name={TYPE_ICON[mat.type] ?? 'article'} className="text-blue-600 text-[20px]" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-slate-900 text-sm leading-tight line-clamp-2">{mat.title}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${STATUS_COLOR[mat.status] ?? 'bg-slate-100 text-slate-600'}`}>
+                      {STATUS_LABEL[mat.status] ?? mat.status}
+                    </span>
+                    {mat.aiScore != null && (
+                      <span className="text-xs text-slate-500 flex items-center gap-1">
+                        <Icon name="stars" className="text-[14px] text-amber-500" />
+                        {mat.aiScore}/10
+                      </span>
+                    )}
+                  </div>
+                  {mat.progressPercent > 0 && mat.status !== 'completed' && (
+                    <div className="mt-3 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-blue-500 rounded-full"
+                        style={{ width: `${mat.progressPercent}%` }}
+                      />
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </PersonaLearnLayout>
   );

@@ -32,6 +32,22 @@ export interface CreateEmployeeDto {
   goal?: string
 }
 
+export interface EmployeeMaterialItem {
+  id: string
+  employeeId: string
+  materialId: string
+  title: string
+  description?: string
+  type: 'pdf' | 'audio' | 'video'
+  fileUrl: string
+  status: 'assigned' | 'in_progress' | 'completed'
+  progressPercent: number
+  aiScore?: number
+  deadline?: string
+  startedAt?: string
+  completedAt?: string
+}
+
 export const employeesApi = {
   list: (search?: string) =>
     api.get<Employee[]>('/employees', { params: search ? { search } : {} }).then(r => r.data),
@@ -68,4 +84,7 @@ export const employeesApi = {
 
   dashboardStats: () =>
     api.get<DashboardStats>('/employees/dashboard-stats').then(r => r.data),
+
+  myMaterials: () =>
+    api.get<EmployeeMaterialItem[]>('/employees/me/materials').then(r => r.data),
 }
